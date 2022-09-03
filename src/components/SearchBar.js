@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import useDebounce from '../hooks/useDebounce';
 import { IoClose, IoSearch } from 'react-icons/io5';
 import { MoonLoader } from 'react-spinners';
+import TvShow from './TvShow';
 
 const SearchBarContainer = styled(motion.div)`
   display: flex;
@@ -227,10 +228,22 @@ const SearchBar = () => {
               <WarningMessage>Start typing to Search</WarningMessage>
             </LoadingWrapper>
           )}
-          {!isLoading && isEmpty && !noTvShows && (
+          {!isLoading && noTvShows && (
             <LoadingWrapper>
-              <WarningMessage>Start typing to Search</WarningMessage>
+              <WarningMessage>No TV Shows or Series Fount...!!!</WarningMessage>
             </LoadingWrapper>
+          )}
+          {!isLoading && !isEmpty && (
+            <>
+              {tvShows.map(({ show }) => (
+                <TvShow
+                  key={show.id}
+                  thumbanilSrc={show.image && show.image.medium}
+                  name={show.name}
+                  rating={show.rating && show.rating.average}
+                />
+              ))}
+            </>
           )}
         </SearchContent>
       )}
