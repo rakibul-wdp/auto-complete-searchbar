@@ -122,6 +122,28 @@ const SearchBar = () => {
   const [tvShows, setTvShows] = useState([]);
   const [noTvShows, setNoTvShows] = useState(false);
 
+  const isEmpty = !tvShows || tvShows.length === 0;
+
+  const changeHandler = (e) => {
+    e.preventDefault();
+    if (e.target.value.trim() === '') setNoTvShows(false);
+
+    setSearchQuery(e.target.value);
+  };
+
+  const expandContainer = () => {
+    setExpanded(true);
+  };
+
+  const collapseContainer = () => {
+    setExpanded(false);
+    setSearchQuery('');
+    setLoading(false);
+    setNoTvShows(false);
+    setTvShows([]);
+    if (inputRef.current) inputRef.current.value = '';
+  };
+
   return (
     <SearchBarContainer>
       <SearchInputContainer>
