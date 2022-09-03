@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import React, { useRef, useState } from 'react';
+import { useClickOutside } from 'react-click-outside-hook';
 import styled from 'styled-components';
 
 const SearchBarContainer = styled(motion.div)`
@@ -113,6 +114,14 @@ const containerTransition = {
 };
 
 const SearchBar = () => {
+  const [isExpanded, setExpanded] = useState(false);
+  const [parentRef, isClickedOutside] = useClickOutside();
+  const inputRef = useRef();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setLoading] = useState(false);
+  const [tvShows, setTvShows] = useState([]);
+  const [noTvShows, setNoTvShows] = useState(false);
+
   return (
     <SearchBarContainer>
       <SearchInputContainer>
