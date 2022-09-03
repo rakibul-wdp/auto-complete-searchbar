@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -53,12 +53,32 @@ const SearchInput = styled.input`
   }
 `;
 
+const CloseIcon = styled(motion.span)`
+  color: #bebebe;
+  font-size: 23px;
+  vertical-align: middle;
+  transition: all 200ms ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    color: #dfdfdf;
+  }
+`;
+
+const LineSeperator = styled.span`
+  display: flex;
+  min-width: 100%;
+  min-height: 2px;
+  background-color: #d8d8d878;
+`;
+
 const SearchBar = () => {
   return (
     <SearchBarContainer>
       <SearchInputContainer>
         <SearchIcon></SearchIcon>
         <SearchInput />
+        <AnimatePresence></AnimatePresence>
       </SearchInputContainer>
     </SearchBarContainer>
   );
