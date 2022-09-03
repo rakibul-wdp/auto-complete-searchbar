@@ -21,10 +21,45 @@ const SearchInputContainer = styled.div`
   padding: 2px 15px;
 `;
 
+const SearchIcon = styled.span`
+  color: #bebebe;
+  font-size: 27px;
+  margin-right: 10px;
+  margin-top: 6px;
+  vertical-align: middle;
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+  font-size: 21px;
+  color: #12112e;
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: transparent;
+
+  &:focus {
+    outline: none;
+    &::placeholder {
+      opacity: 0;
+    }
+  }
+
+  &::placeholder {
+    color: #bebebe;
+    transition: all 250ms ease-in-out;
+  }
+`;
+
 const SearchBar = () => {
   return (
     <SearchBarContainer>
-      <SearchInputContainer></SearchInputContainer>
+      <SearchInputContainer>
+        <SearchIcon></SearchIcon>
+        <SearchInput />
+      </SearchInputContainer>
     </SearchBarContainer>
   );
 };
