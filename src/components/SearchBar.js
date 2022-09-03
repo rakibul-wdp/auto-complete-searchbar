@@ -1,5 +1,6 @@
+import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useClickOutside } from 'react-click-outside-hook';
 import styled from 'styled-components';
 
@@ -142,6 +143,37 @@ const SearchBar = () => {
     setNoTvShows(false);
     setTvShows([]);
     if (inputRef.current) inputRef.current.value = '';
+  };
+
+  useEffect(() => {
+    if (isClickedOutside) collapseContainer();
+  }, [isClickedOutside]);
+
+  const prepareSearchQuery = (query) => {
+    const url = `http://api.tvmaze.com/search/shows?q=${query}`;
+
+    return encodeURI(url);
+  };
+
+  const searchTvShow = async () => {
+    if (!searchQuery || searchQuery.trim() === '') return;
+
+    setLoading(true);
+    setNoTvShows(false);
+
+    const URL = prepareSearchQuery(searchQuery);
+
+    const response = await axios.get(URL).catch((error) => {
+      console.log('Error', error);
+    });
+
+    if (response) {
+      console.log('Response', response.data);
+      if (response.data && response.data.length === 0) setNoTvShows(true);
+
+      setTvShows(response.data);
+    }
+    setLoading(false);
   };
 
   return (
