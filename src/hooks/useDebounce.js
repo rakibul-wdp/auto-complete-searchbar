@@ -4,7 +4,7 @@ const useDebounce = (value, timeout, callback) => {
   const [timer, setTimer] = useState(null);
 
   const clearTimer = () => {
-    if (timer) clearTimer(timer);
+    if (timer) clearTimeout(timer);
   };
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const useDebounce = (value, timeout, callback) => {
       const newTimer = setTimeout(callback, timeout);
       setTimer(newTimer);
     }
-  }, [callback, timeout, value]);
+  }, [value]);
 };
 
 export default useDebounce;

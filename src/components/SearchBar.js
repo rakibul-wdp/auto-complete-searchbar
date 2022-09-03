@@ -7,6 +7,7 @@ import useDebounce from '../hooks/useDebounce';
 import { IoClose, IoSearch } from 'react-icons/io5';
 import { MoonLoader } from 'react-spinners';
 import TvShow from './TvShow';
+import './SearchBar.css';
 
 const SearchBarContainer = styled(motion.div)`
   display: flex;
@@ -19,7 +20,7 @@ const SearchBarContainer = styled(motion.div)`
 `;
 
 const SearchInputContainer = styled.div`
-  width: 100%;
+  width: 90%;
   min-height: 4em;
   display: flex;
   align-items: center;
@@ -79,7 +80,7 @@ const LineSeparator = styled.span`
 `;
 
 const SearchContent = styled.div`
-  width: 100%;
+  width: 94.5%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -183,71 +184,78 @@ const SearchBar = () => {
   useDebounce(searchQuery, 500, searchTvShow);
 
   return (
-    <SearchBarContainer
-      animate={isExpanded ? 'expanded' : 'collapsed'}
-      variants={containerVariants}
-      transition={containerTransition}
-      ref={parentRef}
-    >
-      <SearchInputContainer>
-        <SearchIcon>
-          <IoSearch />
-        </SearchIcon>
-        <SearchInput
-          placeholder='Search for Series/Shows'
-          onFocus={expandContainer}
-          ref={inputRef}
-          value={searchQuery}
-          onChange={changeHandler}
-        />
-        <AnimatePresence>
+    <>
+      <div className='banner-background'></div>
+      <div className='banner-background bg-two'></div>
+      <div className='banner-background bg-three'></div>
+      <div className='banner-background-content'>
+        <SearchBarContainer
+          animate={isExpanded ? 'expanded' : 'collapsed'}
+          variants={containerVariants}
+          transition={containerTransition}
+          ref={parentRef}
+        >
+          <SearchInputContainer>
+            <SearchIcon>
+              <IoSearch />
+            </SearchIcon>
+            <SearchInput
+              placeholder='Search for Series/Shows'
+              onFocus={expandContainer}
+              ref={inputRef}
+              value={searchQuery}
+              onChange={changeHandler}
+            />
+            <AnimatePresence>
+              {isExpanded && (
+                <CloseIcon
+                  key={'close-icon'}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={collapseContainer}
+                  transition={{ duration: 0.2 }}
+                >
+                  <IoClose />
+                </CloseIcon>
+              )}
+            </AnimatePresence>
+          </SearchInputContainer>
+          {isExpanded && <LineSeparator />}
           {isExpanded && (
-            <CloseIcon
-              key={'close-icon'}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={collapseContainer}
-              transition={{ duration: 0.2 }}
-            >
-              <IoClose />
-            </CloseIcon>
+            <SearchContent>
+              {isLoading && (
+                <LoadingWrapper>
+                  <MoonLoader loading color='#000' size={20} />
+                </LoadingWrapper>
+              )}
+              {!isLoading && isEmpty && !noTvShows && (
+                <LoadingWrapper>
+                  <WarningMessage>Start typing to Search</WarningMessage>
+                </LoadingWrapper>
+              )}
+              {!isLoading && noTvShows && (
+                <LoadingWrapper>
+                  <WarningMessage>No TV Shows or Series Fount...!!!</WarningMessage>
+                </LoadingWrapper>
+              )}
+              {!isLoading && !isEmpty && (
+                <>
+                  {tvShows.map(({ show }) => (
+                    <TvShow
+                      key={show.id}
+                      thumbanilSrc={show.image && show.image.medium}
+                      name={show.name}
+                      rating={show.rating && show.rating.average}
+                    />
+                  ))}
+                </>
+              )}
+            </SearchContent>
           )}
-        </AnimatePresence>
-      </SearchInputContainer>
-      {isExpanded && <LineSeparator />}
-      {isExpanded && (
-        <SearchContent>
-          {isLoading && (
-            <LoadingWrapper>
-              <MoonLoader loading color='#000' size={20} />
-            </LoadingWrapper>
-          )}
-          {!isLoading && isEmpty && !noTvShows && (
-            <LoadingWrapper>
-              <WarningMessage>Start typing to Search</WarningMessage>
-            </LoadingWrapper>
-          )}
-          {!isLoading && noTvShows && (
-            <LoadingWrapper>
-              <WarningMessage>No TV Shows or Series Fount...!!!</WarningMessage>
-            </LoadingWrapper>
-          )}
-          {!isLoading && !isEmpty && (
-            <>
-              {tvShows.map(({ show }) => (
-                <TvShow
-                  key={show.id}
-                  thumbanilSrc={show.image && show.image.medium}
-                  name={show.name}
-                  rating={show.rating && show.rating.average}
-                />
-              ))}
-            </>
-          )}
-        </SearchContent>
-      )}
-    </SearchBarContainer>
+        </SearchBarContainer>
+      </div>
+    </>
   );
 };
 

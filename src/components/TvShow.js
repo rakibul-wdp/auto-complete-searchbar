@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const TvShowContainer = styled.div`
-  width: 100%;
+  width: 96%;
   min-height: 6em;
   display: flex;
   border-bottom: 2px solid #d8d8d852;
