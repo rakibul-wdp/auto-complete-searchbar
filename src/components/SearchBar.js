@@ -72,6 +72,31 @@ const LineSeperator = styled.span`
   background-color: #d8d8d878;
 `;
 
+const SearchContent = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  overflow-y: auto;
+`;
+
+const LoadingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const WarningMessage = styled.span`
+  color: #a1a1a1;
+  font-size: 14px;
+  display: flex;
+  align-self: center;
+  justify-self: center;
+`;
+
 const SearchBar = () => {
   return (
     <SearchBarContainer>
