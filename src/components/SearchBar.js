@@ -3,6 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
 import { useClickOutside } from 'react-click-outside-hook';
 import styled from 'styled-components';
+import useDebounce from '../hooks/useDebounce';
+import { IoClose, IoSearch } from 'react-icons/io5';
+import { MoonLoader } from 'react-spinners';
 
 const SearchBarContainer = styled(motion.div)`
   display: flex;
@@ -67,7 +70,7 @@ const CloseIcon = styled(motion.span)`
   }
 `;
 
-const LineSeperator = styled.span`
+const LineSeparator = styled.span`
   display: flex;
   min-width: 100%;
   min-height: 2px;
@@ -176,13 +179,61 @@ const SearchBar = () => {
     setLoading(false);
   };
 
+  useDebounce(searchQuery, 500, searchTvShow);
+
   return (
-    <SearchBarContainer>
+    <SearchBarContainer
+      animate={isExpanded ? 'expanded' : 'collapsed'}
+      variants={containerVariants}
+      transition={containerTransition}
+      ref={parentRef}
+    >
       <SearchInputContainer>
-        <SearchIcon></SearchIcon>
-        <SearchInput />
-        <AnimatePresence></AnimatePresence>
+        <SearchIcon>
+          <IoSearch />
+        </SearchIcon>
+        <SearchInput
+          placeholder='Search for Series/Shows'
+          onFocus={expandContainer}
+          ref={inputRef}
+          value={searchQuery}
+          onChange={changeHandler}
+        />
+        <AnimatePresence>
+          {isExpanded && (
+            <CloseIcon
+              key={'close-icon'}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={collapseContainer}
+              transition={{ duration: 0.2 }}
+            >
+              <IoClose />
+            </CloseIcon>
+          )}
+        </AnimatePresence>
       </SearchInputContainer>
+      {isExpanded && <LineSeparator />}
+      {isExpanded && (
+        <SearchContent>
+          {isLoading && (
+            <LoadingWrapper>
+              <MoonLoader loading color='#000' size={20} />
+            </LoadingWrapper>
+          )}
+          {!isLoading && isEmpty && !noTvShows && (
+            <LoadingWrapper>
+              <WarningMessage>Start typing to Search</WarningMessage>
+            </LoadingWrapper>
+          )}
+          {!isLoading && isEmpty && !noTvShows && (
+            <LoadingWrapper>
+              <WarningMessage>Start typing to Search</WarningMessage>
+            </LoadingWrapper>
+          )}
+        </SearchContent>
+      )}
     </SearchBarContainer>
   );
 };
