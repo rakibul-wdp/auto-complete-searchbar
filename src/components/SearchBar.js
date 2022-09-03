@@ -97,6 +97,21 @@ const WarningMessage = styled.span`
   justify-self: center;
 `;
 
+const containerVariants = {
+  expanded: {
+    height: '30em',
+  },
+  collapsed: {
+    height: '3.8em',
+  },
+};
+
+const containerTransition = {
+  type: 'spring',
+  damping: 22,
+  stiffness: 150,
+};
+
 const SearchBar = () => {
   return (
     <SearchBarContainer>
